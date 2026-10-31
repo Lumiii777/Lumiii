@@ -223,8 +223,16 @@ html[lang="zh"] h1,html[lang="zh"] h2,html[lang="zh"] footer h4{font-family:"Not
   <div id="abody"></div>
 </div></div>
 <div class="toast" id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const P=[
+// CONFIGURACIÓN DE SUPABASE
+// Reemplaza estos valores con tu Project URL limpio y tu Publishable key.
+// Nunca coloques aquí una Secret key ni una service_role key.
+const SUPABASE_URL = "PEGA_AQUI_TU_PROJECT_URL";
+const SUPABASE_PUBLISHABLE_KEY = "PEGA_AQUI_TU_PUBLISHABLE_KEY";
+</script>
+<script>
+let P=[
  {id:1,n:"Audífonos inalámbricos",b:"AudioNova · Air 2",c:"Tecnología",k:"México",i:"🎧",o:[["Tienda de ejemplo A",1299,"México"],["Tienda de ejemplo B",1399,"México"],["Tienda de ejemplo C",1499,"México"]]},
  {id:2,n:"Reloj inteligente",b:"Pulse · Serie 4",c:"Tecnología",k:"Internacional",i:"⌚",o:[["Tienda de ejemplo D",899,"México"],["Tienda de ejemplo E",949,"Estados Unidos"],["Tienda de ejemplo F",1029,"Internacional"]]},
  {id:3,n:"Licuadora compacta",b:"CasaMix · 600 W",c:"Hogar",k:"México",i:"🥤",o:[["Tienda de ejemplo A",749,"México"],["Tienda de ejemplo G",799,"México"]]},
@@ -423,10 +431,64 @@ $("accBtn").onclick=()=>openAcc();$("ac").onclick=closeAcc;
 $("ab").onclick=e=>{if(e.target.id==="ab")closeAcc()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAcc()});
 const f0=$("mf").onsubmit;$("mf").onsubmit=e=>{f0(e);apply($("ok"))};
+// Carga productos y ofertas desde Supabase. Si las tablas están vacías,
+// la página conserva los productos ficticios de demostración.
+async function loadProductsFromSupabase(){
+  const note = document.querySelector("#ofertas .note");
+  const configured =
+    SUPABASE_URL.startsWith("https://") &&
+    !SUPABASE_URL.includes("PEGA_AQUI") &&
+    SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_") &&
+    !SUPABASE_PUBLISHABLE_KEY.includes("PEGA_AQUI");
+
+  if(!configured){
+    if(note) note.innerHTML = "<strong>Modo demostración:</strong> agrega tu Project URL y Publishable key en la configuración para conectar la base de datos. Los precios visibles siguen siendo ficticios.";
+    return;
+  }
+
+  try{
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    const { data, error } = await client
+      .from("products")
+      .select("id,name,brand,category,description,image_url,offers(id,price,currency,product_url,availability,stores(name,country))");
+
+    if(error) throw error;
+
+    const rows = (data || []).map((p, index) => {
+      const offers = (p.offers || [])
+        .filter(o => o.currency === "MXN" && Number.isFinite(Number(o.price)))
+        .map(o => [o.stores?.name || "Tienda", Number(o.price), o.stores?.country || "México"]);
+      if(!offers.length) return null;
+      const prices = offers.map(o => o[1]);
+      const low = Math.min(...prices), high = Math.max(...prices);
+      return {
+        id: index + 1, dbId: p.id, n: p.name, b: p.brand || "",
+        c: p.category || "Otros", k: offers[0][2],
+        i: ({ "Tecnología":"💻", "Hogar":"🏠", "Belleza":"🧴", "Moda":"👕", "Deportes":"⚽", "Juguetes":"🧩" })[p.category] || "🛍️",
+        o: offers, min: low, max: high, s: high-low,
+        pct: high ? Math.round((high-low)/high*100) : 0
+      };
+    }).filter(Boolean);
+
+    if(rows.length){
+      P = rows;
+      cat = "all"; q = ""; $("q").value = "";
+      render();
+      if(note) note.innerHTML = "<strong>Datos conectados:</strong> estos productos y ofertas se cargaron desde la base de datos de Comparar+. Confirma precios y disponibilidad directamente con cada tienda.";
+    }else if(note){
+      note.innerHTML = "<strong>Conexión establecida:</strong> Supabase respondió correctamente, pero todavía no hay productos con ofertas en MXN. Por ahora mostramos productos ficticios de demostración.";
+    }
+  }catch(err){
+    console.error("Error al conectar con Supabase:", err);
+    if(note) note.innerHTML = "<strong>No se pudo cargar la base de datos.</strong> Revisa las credenciales, las políticas de lectura y las relaciones entre tablas. La página conserva los productos de demostración.";
+  }
+}
+
 try{lang=+(localStorage.getItem("cp_lang")||0)}catch(e){}
 if(!(lang>=0&&lang<4))lang=0;
 $("lang").value=lang;$("lang").onchange=e=>setLang(+e.target.value);
 refresh();
+loadProductsFromSupabase();
 </script>
 </body>
 </html>
