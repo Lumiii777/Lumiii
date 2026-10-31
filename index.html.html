@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Comparar+ reúne ofertas de distintas tiendas para que compres al mejor precio.">
+<title>Comparar+ | Compara precios y compra mejor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#C7D3DB;--blue-l:#E4EBEF;--taupe:#A79A8A;--cream:#FCF7DF;--card:#FFFDF6;--ink:#3E3630;--muted:#6B6055;--line:#E6DFC9;--script:"Sacramento","Segoe Script","Brush Script MT",cursive}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 Jost,ui-sans-serif,system-ui,sans-serif}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #5f7f94;outline-offset:2px}
+.wrap{width:min(1200px,calc(100% - 32px));margin:auto}
+.script{font-family:var(--script);font-weight:400}
+
+/* Barra de avisos */
+.top{font-size:13px}.top .wrap{display:flex;gap:10px;align-items:center;padding:9px 0;flex-wrap:wrap}
+.pill{background:var(--blue-l);border-radius:999px;padding:4px 14px}
+.top .mk{margin-left:auto;display:flex;align-items:center;gap:6px}
+.top select{background:transparent;border:0;cursor:pointer;font-size:13px}
+
+/* Encabezado */
+.bar{background:var(--taupe)}
+.bar .wrap{display:flex;align-items:center;gap:20px;padding:12px 0}
+.brand{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.brand svg{width:44px;height:44px}
+.brand span{font-family:var(--script);font-size:42px;line-height:1;padding-top:6px}
+.search{flex:1;display:flex;background:var(--card);border-radius:999px;padding:4px;max-width:640px}
+.search input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:9px 16px}
+.search input::placeholder{color:#7d7266}
+.search button{border:0;background:var(--ink);color:var(--cream);border-radius:999px;padding:0 20px;cursor:pointer;font-weight:500}
+.acts{display:flex;gap:18px;margin-left:auto;font-size:14px;font-weight:500;align-items:center}
+.acts a:hover{text-decoration:underline}
+.cat-btn{background:var(--cream);border-radius:999px;padding:9px 20px;font-weight:500}
+.menu{display:flex;gap:26px;padding:14px 0;font-size:14px;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+.menu button{background:none;border:0;cursor:pointer;padding:2px 0;border-bottom:2px solid transparent}
+.menu button:hover,.menu button[aria-pressed="true"]{border-color:var(--ink)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;border-radius:32px;overflow:hidden;min-height:430px}
+.hero-l{background:var(--blue-l);padding:48px 44px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+h1{font-family:var(--script);font-weight:400;font-size:clamp(52px,7vw,92px);line-height:.95;margin:0 0 14px}
+.hero-l p{max-width:420px;margin:0 0 26px;color:var(--muted);font-size:17px}
+.cta{background:var(--ink);color:var(--cream);border:0;border-radius:999px;padding:14px 26px;font-weight:500;cursor:pointer;display:inline-flex;gap:14px;align-items:center}
+.cta:hover{background:#2a241f}
+.hero-r{background:var(--blue);position:relative;display:grid;place-items:center;overflow:hidden}
+.hero-r>svg{width:min(300px,62%);height:auto;transform:rotate(-4deg)}
+.float{position:absolute;background:var(--card);border-radius:16px;padding:10px 14px;box-shadow:0 10px 26px #3e363022;font-size:13px;line-height:1.3}
+.float b{display:block;font-size:17px}.float em{font-style:normal;color:#2f6b52;font-weight:600}
+.f1{top:12%;left:7%}.f2{top:44%;right:6%}.f3{bottom:11%;left:12%}
+.dots{display:flex;justify-content:center;gap:8px;margin:18px 0 40px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--blue)}.dots i:first-child{background:var(--taupe)}
+
+/* Categorías */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;grid-auto-rows:120px}
+.tile{background:var(--blue-l);border-radius:20px;padding:18px;position:relative;overflow:hidden;text-align:left;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;transition:background .2s}
+.tile:hover{background:var(--blue)}
+.tile b{font-weight:500;font-size:17px}.tile small{color:var(--muted);margin-top:auto}
+.tile .e{position:absolute;right:14px;bottom:8px;font-size:58px;line-height:1}
+.tile.tall{grid-row:span 2}.tile.tall .e{font-size:110px}.tile.wide{grid-column:span 2}
+
+/* Secciones y carruseles */
+.sec{margin-top:56px}
+.sec-h{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+h2{font-family:var(--script);font-weight:400;font-size:46px;line-height:1;margin:0}
+.chip{background:var(--blue-l);border:0;border-radius:999px;padding:6px 16px;font-size:13px}
+.sec-h select{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:13px}
+.arrows{margin-left:auto;display:flex;gap:8px}
+.arrows button{width:38px;height:38px;border-radius:50%;border:0;background:var(--blue-l);cursor:pointer;font-size:17px}
+.arrows button:hover{background:var(--blue)}
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+.card{flex:0 0 232px;scroll-snap-align:start;background:var(--blue-l);border-radius:20px;padding:10px;display:flex;flex-direction:column}
+.art{height:190px;background:var(--card);border-radius:14px;display:grid;place-items:center;font-size:74px;position:relative}
+.tags{position:absolute;top:10px;left:10px;display:flex;gap:5px}
+.tg{font-size:11px;border:1px solid var(--ink);border-radius:999px;padding:1px 9px;background:var(--card)}
+.tg.s{background:var(--taupe);border-color:var(--taupe);color:#fff;color:var(--ink)}
+.info{padding:12px 6px 6px;display:flex;flex-direction:column;flex:1}
+.info small{color:var(--muted);font-size:12px}
+.info h3{font-size:15px;font-weight:500;margin:2px 0 8px;line-height:1.3}
+.pr{margin-top:auto;display:flex;align-items:baseline;gap:8px;font-size:20px;font-weight:600}
+.pr s{font-size:12px;font-weight:400;color:var(--muted)}
+.card .cta{margin-top:12px;justify-content:center;padding:10px;font-size:14px;width:100%}
+.empty{padding:40px;text-align:center;color:var(--muted);background:var(--blue-l);border-radius:20px;width:100%}
+.note{margin-top:20px;font-size:13px;color:var(--muted);background:var(--blue-l);border-radius:14px;padding:12px 16px}
+
+/* Banner de alertas */
+.promo-wrap{margin-top:64px;position:relative}
+.promo-wrap::after{content:"";position:absolute;left:0;right:0;bottom:0;height:50%;background:var(--ink);z-index:0}
+.promo{position:relative;z-index:1;border-radius:32px;padding:44px;background:linear-gradient(120deg,var(--blue),var(--blue-l) 55%,var(--cream));display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:center;overflow:hidden}
+.promo h2{font-size:clamp(40px,5vw,62px);line-height:.95;margin-bottom:10px}
+.promo p{margin:0 0 20px;color:var(--muted)}
+.mail{display:flex;background:var(--card);border-radius:999px;padding:5px;max-width:460px}
+.mail input{flex:1;min-width:0;border:0;outline:0;background:transparent;padding:10px 16px}
+.mail button{border:0;background:var(--ink);color:var(--cream);border-radius:999px;padding:0 22px;cursor:pointer}
+#ok{margin-top:10px;font-size:13px;min-height:20px}
+.promo-art{display:grid;place-items:center}.promo-art svg{width:170px;height:auto;transform:rotate(6deg)}
+
+/* Pie */
+footer{background:var(--ink);color:#d9d0c0;padding:50px 0 34px;font-size:14px}
+.fg{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:30px}
+footer h4{font-family:var(--script);font-weight:400;font-size:28px;margin:0 0 10px;color:var(--taupe)}
+footer a{display:block;margin:6px 0}footer a:hover{color:#fff}
+footer .brand span{color:var(--cream)}footer p{color:#a99f90;margin:8px 0}
+
+/* Modal */
+.bd{position:fixed;inset:0;background:#2a241fb3;display:none;place-items:center;padding:16px;z-index:10}
+.modal{background:var(--cream);border-radius:24px;max-width:520px;width:100%;max-height:88vh;overflow:auto;padding:24px}
+.mh{display:flex;gap:14px;align-items:center}
+.mh .ic{width:58px;height:58px;border-radius:16px;background:var(--blue-l);display:grid;place-items:center;font-size:32px}
+.mh h2{font-size:38px}.mh p{margin:0;color:var(--muted);font-size:13px}
+.x{margin-left:auto;border:0;background:var(--blue-l);width:36px;height:36px;border-radius:50%;cursor:pointer}
+.of{display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:var(--card);margin-top:10px;border:1px solid var(--line)}
+.of.best{background:var(--blue-l);border:2px solid var(--ink)}
+.of small{display:block;color:var(--muted)}.of .r{margin-left:auto;text-align:right}.of .a{font-size:19px;font-weight:600}
+.bt{background:var(--ink);color:var(--cream);font-size:11px;border-radius:999px;padding:2px 9px;margin-left:6px}
+
+@media(max-width:900px){.hero{grid-template-columns:1fr}.hero-r{min-height:280px}.tiles{grid-template-columns:repeat(2,1fr)}.tile.tall{grid-row:auto}.tile.tall .e{font-size:58px}.promo{grid-template-columns:1fr}.promo-art{display:none}.fg{grid-template-columns:1fr 1fr}.acts a:not(.cat-btn){display:none}}
+@media(max-width:600px){.bar .wrap{flex-wrap:wrap}.search{order:3;flex-basis:100%;max-width:none}.hero-l{padding:34px 24px}.promo{padding:30px 22px}.top .mk{margin-left:0}.card{flex-basis:200px}.arrows{display:none}}
+.lg{display:flex;align-items:center;gap:4px;margin-left:12px}.lg select{background:transparent;border:0;cursor:pointer;font-size:13px}
+.acct{background:var(--ink);color:var(--cream);border:0;border-radius:999px;padding:9px 20px;font-weight:500;cursor:pointer}
+.card{position:relative}.lc{text-transform:lowercase}
+.hrt{position:absolute;top:18px;right:18px;z-index:1;width:34px;height:34px;border-radius:50%;border:0;background:var(--card);cursor:pointer;font-size:18px;line-height:1}.hrt.on{color:#b0443a}
+.buy{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer;margin-left:6px;white-space:nowrap}.buy:hover{background:var(--ink);color:var(--cream)}
+.mact{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.mact .chip,.of .chip{cursor:pointer}
+.tabs{display:flex;gap:6px;margin:18px 0 6px;flex-wrap:wrap}.tabs button{border:0;background:var(--blue-l);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:13px}.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--cream)}.cn{margin-left:6px;opacity:.7}
+.af{display:grid;gap:12px;margin-top:16px}.af label{display:grid;gap:4px;font-size:13px;color:var(--muted)}.af input{border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:var(--card);color:var(--ink)}
+.ic2{width:44px;height:44px;border-radius:12px;background:var(--blue-l);display:grid;place-items:center;font-size:24px;flex-shrink:0}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:10px 20px;border-radius:999px;z-index:20;display:none}
+html[lang="zh"] h1,html[lang="zh"] h2,html[lang="zh"] footer h4{font-family:"Noto Serif SC","Songti SC",SimSun,serif;font-weight:600}html[lang="zh"] h1{font-size:clamp(38px,5vw,60px);line-height:1.15}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="bag" viewBox="0 0 64 64"><g fill="none" stroke="#3E3630" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 24H52L50 58H14Z" fill="#C7D3DB"/><path d="M23 25C21 5 43 5 41 25"/>
+  <circle cx="23" cy="28" r="2" fill="#FCF7DF"/><circle cx="41" cy="28" r="2" fill="#FCF7DF"/>
+  <path d="M15 51C29 57 45 49 51.500 34" stroke="#A79A8A"/><path d="M32 36V48M26 42H38"/></g></symbol>
+</svg>
+
+<div class="top"><div class="wrap">
+  <span class="pill">Comparar es gratis</span><span class="pill">Sin registro</span>
+  <label class="mk">Mercado: <select id="country" aria-label="Filtrar por mercado">
+    <option value="all">Todos</option><option value="México">México</option><option value="Estados Unidos">Estados Unidos</option><option value="Internacional">Internacional</option></select></label>
+  <label class="lg"><span aria-hidden="true">🌐</span><select id="lang" aria-label="Idioma"><option value="0">Español</option><option value="1">English</option><option value="2">中文</option><option value="3">Português</option></select></label>
+</div></div>
+
+<header class="bar"><div class="wrap">
+  <a class="brand" href="#" aria-label="Comparar+, inicio"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#bag"/></svg><span>Comparar+</span></a>
+  <form class="search" id="sf" role="search"><input id="q" type="search" placeholder="Busca un producto, marca o modelo" aria-label="Buscar productos"><button type="submit">Buscar</button></form>
+  <nav class="acts" aria-label="Cuenta"><a href="#como">Cómo funciona</a><a href="#alertas">Alertas</a><a class="cat-btn" href="#categorias">Categorías</a><button class="acct" id="accBtn" type="button">Entrar</button></nav>
+</div></header>
+
+<div class="wrap">
+  <div class="menu" id="menu" role="group" aria-label="Categorías"></div>
+
+  <section class="hero">
+    <div class="hero-l">
+      <h1>Compara antes de comprar</h1>
+      <p>Reunimos ofertas de varias tiendas para que veas cuánto puedes ahorrar y elijas con tranquilidad.</p>
+      <button class="cta" id="go">Ver ofertas <span aria-hidden="true">→</span></button>
+    </div>
+    <div class="hero-r">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#bag"/></svg>
+      <div class="float f1"><small>Tienda de ejemplo A</small><b>$1,299</b><em>Mejor precio</em></div>
+      <div class="float f2"><small>Tienda de ejemplo B</small><b>$1,399</b>+$100</div>
+      <div class="float f3"><small>Ahorro posible</small><b>$200</b>en audífonos</div>
+    </div>
+  </section>
+  <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <section id="categorias"><div class="tiles" id="tiles"></div></section>
+
+  <section class="sec" id="ofertas">
+    <div class="sec-h">
+      <h2>Ofertas y novedades</h2><span class="chip" id="count" aria-live="polite"></span>
+      <select id="sort" aria-label="Ordenar productos"><option value="def">Orden recomendado</option><option value="save">Mayor ahorro</option><option value="low">Menor precio</option><option value="high">Mayor precio</option></select>
+      <div class="arrows"><button data-r="r1" data-d="-1" aria-label="Anterior">←</button><button data-r="r1" data-d="1" aria-label="Siguiente">→</button></div>
+    </div>
+    <div class="rail" id="r1"></div>
+    <div class="note"><strong>Demostración:</strong> los productos, precios y tiendas son ficticios. Aún no hay ofertas reales ni enlaces comerciales.</div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>Más comparados</h2>
+      <div class="arrows"><button data-r="r2" data-d="-1" aria-label="Anterior">←</button><button data-r="r2" data-d="1" aria-label="Siguiente">→</button></div></div>
+    <div class="rail" id="r2"></div>
+  </section>
+
+  <section class="sec" id="como">
+    <h2>Así funciona</h2>
+    <div class="tiles" style="grid-auto-rows:auto;margin-top:18px;grid-template-columns:repeat(3,1fr)" id="steps"></div>
+  </section>
+
+  <div class="promo-wrap" id="alertas"><div class="promo">
+    <div><h2>Te avisamos cuando baje el precio</h2><p>Deja tu correo y recibe una alerta cuando encontremos una mejor oferta.</p>
+      <form class="mail" id="mf"><input id="em" type="email" required placeholder="Tu correo" aria-label="Correo electrónico"><button type="submit">Enviar</button></form>
+      <div id="ok" role="status"></div></div>
+    <div class="promo-art"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#bag"/></svg></div>
+  </div></div>
+</div>
+
+<footer><div class="wrap fg">
+  <div><a class="brand" href="#"><svg viewBox="0 0 64 64" aria-hidden="true" style="background:var(--cream);border-radius:12px;padding:3px"><use href="#bag"/></svg><span>Comparar+</span></a><p>Comparar para decidir mejor.</p><p>Versión de demostración en desarrollo.</p></div>
+  <div><h4>Categorías</h4><a href="#categorias">Tecnología</a><a href="#categorias">Hogar</a><a href="#categorias">Belleza</a><a href="#categorias">Moda</a></div>
+  <div><h4>Nosotros</h4><a href="#alertas">Acerca de</a><a href="#como">Cómo funciona</a><a href="#alertas">Contacto</a></div>
+  <div><h4>Ayuda</h4><a href="#como">Preguntas frecuentes</a><a href="#ofertas">Confirma el precio en la tienda</a><a href="#alertas">Privacidad</a></div>
+</div></footer>
+
+<div class="bd" id="bd" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="modal">
+  <div class="mh"><div class="ic" id="mi"></div><div><h2 id="mt"></h2><p id="ms"></p></div><button class="x" id="cl" aria-label="Cerrar">✕</button></div>
+  <div id="ol"></div><p class="note">Precios ficticios. Después conectaremos fuentes autorizadas.</p>
+</div></div>
+
+<div class="bd" id="ab" role="dialog" aria-modal="true" aria-labelledby="at"><div class="modal">
+  <div class="mh"><div class="ic" aria-hidden="true">👤</div><div><h2 id="at">Mi cuenta</h2><p id="as"></p></div><button class="x" id="ac" aria-label="Cerrar">✕</button></div>
+  <div id="abody"></div>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// CONFIGURACIÓN DE SUPABASE
+// Reemplaza estos valores con tu Project URL limpio y tu Publishable key.
+// Nunca coloques aquí una Secret key ni una service_role key.
+const SUPABASE_URL = "PEGA_AQUI_TU_PROJECT_URL";
+const SUPABASE_PUBLISHABLE_KEY = "PEGA_AQUI_TU_PUBLISHABLE_KEY";
+</script>
+<script>
+let P=[
+ {id:1,n:"Audífonos inalámbricos",b:"AudioNova · Air 2",c:"Tecnología",k:"México",i:"🎧",o:[["Tienda de ejemplo A",1299,"México"],["Tienda de ejemplo B",1399,"México"],["Tienda de ejemplo C",1499,"México"]]},
+ {id:2,n:"Reloj inteligente",b:"Pulse · Serie 4",c:"Tecnología",k:"Internacional",i:"⌚",o:[["Tienda de ejemplo D",899,"México"],["Tienda de ejemplo E",949,"Estados Unidos"],["Tienda de ejemplo F",1029,"Internacional"]]},
+ {id:3,n:"Licuadora compacta",b:"CasaMix · 600 W",c:"Hogar",k:"México",i:"🥤",o:[["Tienda de ejemplo A",749,"México"],["Tienda de ejemplo G",799,"México"]]},
+ {id:4,n:"Tenis deportivos",b:"RunWay · Unisex",c:"Moda",k:"Estados Unidos",i:"👟",o:[["Tienda de ejemplo H",1199,"Estados Unidos"],["Tienda de ejemplo I",1279,"Internacional"]]},
+ {id:5,n:"Set de cuidado facial",b:"DermaCare · 3 piezas",c:"Belleza",k:"Internacional",i:"🧴",o:[["Tienda de ejemplo J",529,"México"],["Tienda de ejemplo K",579,"Internacional"]]},
+ {id:6,n:"Mancuernas ajustables",b:"Active · Par",c:"Deportes",k:"México",i:"🏋️",o:[["Tienda de ejemplo L",1599,"México"],["Tienda de ejemplo M",1699,"México"]]},
+ {id:7,n:"Bloques de construcción",b:"BuildFun · 500 piezas",c:"Juguetes",k:"Internacional",i:"🧩",o:[["Tienda de ejemplo N",699,"México"],["Tienda de ejemplo O",729,"Internacional"]]}
+];
+P.forEach(p=>{const v=p.o.map(x=>x[1]);p.min=Math.min(...v);p.max=Math.max(...v);p.s=p.max-p.min;p.pct=Math.round(p.s/p.max*100)});
+const C=[["all","Todo"],...["Tecnología","Hogar","Belleza","Moda","Deportes","Juguetes"].map(x=>[x,x])];
+const T=[["Tecnología","💻","tall"],["Hogar","🏠",""],["Belleza","💄",""],["Moda","👕",""],["Deportes","⚽",""],["Juguetes","🧸","wide"]];
+const S=[["Busca un producto","Escribe el nombre, marca o modelo que te interesa.","🔎"],["Compara ofertas","Revisa precios, tiendas y cuánto puedes ahorrar.","⚖️"],["Visita la tienda","Confirma el precio final en el comercio antes de pagar.","🛍️"]];
+const $=id=>document.getElementById(id),m=n=>new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0}).format(n);
+let cat="all",q="";
+function card(p){return `<article class="card"><button class="hrt${has('wish',p.id)?" on":""}" onclick="tog('wish',${p.id})" aria-label="Lista de deseos" aria-pressed="${has('wish',p.id)}">${has('wish',p.id)?"♥":"♡"}</button><div class="art" aria-hidden="true">${p.i}<div class="tags"><span class="tg">${p.o.length} tiendas</span>${p.pct>=10?`<span class="tg s">-${p.pct}%</span>`:""}</div></div><div class="info"><small class="lc">${p.c}</small><h3>${p.n}</h3><small>${p.b}</small><div class="pr" style="margin-top:10px">Desde ${m(p.min)} <s>${m(p.max)}</s></div></div><button class="cta" onclick="show(${p.id})">Comparar precios</button></article>`}
+function render(){
+ const co=$("country").value,s=$("sort").value;
+ const L=P.filter(p=>(cat==="all"||p.c===cat)&&(co==="all"||p.k===co||p.o.some(x=>x[2]===co))&&(!q||(p.n+" "+p.b+" "+p.c).toLowerCase().includes(q)));
+ if(s==="low")L.sort((a,b)=>a.min-b.min);if(s==="high")L.sort((a,b)=>b.min-a.min);if(s==="save")L.sort((a,b)=>b.s-a.s);
+ $("count").textContent=L.length+(L.length===1?" producto":" productos");
+ $("r1").innerHTML=L.length?L.map(card).join(""):`<div class="empty"><strong>No encontramos productos.</strong><br>Prueba con otra búsqueda o cambia la categoría.</div>`;
+ $("r2").innerHTML=P.slice().sort((a,b)=>b.o.length-a.o.length||b.s-a.s).map(card).join("");
+ $("menu").innerHTML=C.map(c=>`<button data-c="${c[0]}" aria-pressed="${c[0]===cat}">${c[1]}</button>`).join("");apply();
+}
+function pick(c){cat=c;render();$("ofertas").scrollIntoView()}
+$("tiles").innerHTML=T.map(t=>`<button class="tile ${t[2]}" data-c="${t[0]}"><b>${t[0]}</b><small>ver productos</small><span class="e" aria-hidden="true">${t[1]}</span></button>`).join("");
+$("steps").innerHTML=S.map(s=>`<div class="tile" style="cursor:default;min-height:150px"><b>${s[0]}</b><small style="margin-top:6px;max-width:75%">${s[1]}</small><span class="e" aria-hidden="true">${s[2]}</span></div>`).join("");
+function show(id,nr){
+ const p=P.find(x=>x.id===id),o=p.o.slice().sort((a,b)=>a[1]-b[1]);if(!nr)hist(id);cur=id;
+ $("mt").textContent=p.n;$("mi").textContent=p.i;$("ms").textContent=p.b+" · "+o.length+" ofertas de ejemplo";
+ $("ol").innerHTML=o.map((x,i)=>`<div class="of${i?"":" best"}"><div><strong>${x[0]}</strong>${i?"":'<span class="bt">Mejor precio</span>'}<small>${x[2]} · precio de demostración</small></div><div class="r"><div class="a">${m(x[1])}</div><small>${i?"+"+m(x[1]-o[0][1]):"Ahorras "+m(p.s)}</small></div><button class="buy" onclick="buy(${p.id},'${x[0]}',${x[1]})">Compré aquí</button></div>`).join("")+`<div class="mact"><button class="chip" onclick="tog('save',${p.id})">${has('save',p.id)?"Guardado":"Guardar"}</button><button class="chip" onclick="tog('wish',${p.id})">${has('wish',p.id)?"En tu lista de deseos":"Lista de deseos"}</button></div>`;
+ $("bd").style.display="grid";if(!nr)$("cl").focus();apply($("bd"));
+}
+const close=()=>$("bd").style.display="none";
+$("cl").onclick=close;$("bd").onclick=e=>{if(e.target.id==="bd")close()};document.onkeydown=e=>{if(e.key==="Escape")close()};
+$("sf").onsubmit=e=>{e.preventDefault();q=$("q").value.trim().toLowerCase();render();$("ofertas").scrollIntoView()};
+$("go").onclick=()=>$("ofertas").scrollIntoView();
+$("tiles").onclick=e=>{const b=e.target.closest(".tile");if(b)pick(b.dataset.c)};
+$("menu").onclick=e=>{const b=e.target.closest("button");if(b){cat=b.dataset.c;render()}};
+$("country").onchange=$("sort").onchange=render;
+document.querySelectorAll(".arrows button").forEach(b=>b.onclick=()=>$(b.dataset.r).scrollBy({left:480*b.dataset.d,behavior:"smooth"}));
+$("mf").onsubmit=e=>{e.preventDefault();$("ok").textContent="Listo. Esto es una demostración: aún no enviamos alertas.";$("em").value=""};
+</script>
+<script>
+const LC=["es-MX","en-US","zh-CN","pt-BR"],LG=["es","en","zh","pt"],T0=document.title;
+let lang=0,cur=null,tab="save";
+const D={};[
+["Comparar es gratis","Comparing is free","比价完全免费","Comparar é grátis"],
+["Sin registro","No sign-up needed","无需注册","Sem cadastro"],
+["Mercado:","Market:","市场：","Mercado:"],
+["Todos","All","全部","Todos"],
+["México","Mexico","墨西哥","México"],
+["Estados Unidos","United States","美国","Estados Unidos"],
+["Internacional","International","国际","Internacional"],
+["Buscar productos","Search products","搜索商品","Buscar produtos"],
+["Busca un producto, marca o modelo","Search a product, brand or model","搜索商品、品牌或型号","Busque um produto, marca ou modelo"],
+["Buscar","Search","搜索","Buscar"],
+["Cómo funciona","How it works","使用方法","Como funciona"],
+["Alertas","Alerts","提醒","Alertas"],
+["Categorías","Categories","分类","Categorias"],
+["Todo","All","全部","Tudo"],
+["Tecnología","Technology","科技数码","Tecnologia"],
+["Hogar","Home","家居","Casa"],
+["Belleza","Beauty","美妆","Beleza"],
+["Moda","Fashion","时尚","Moda"],
+["Deportes","Sports","运动","Esportes"],
+["Juguetes","Toys","玩具","Brinquedos"],
+["Compara antes de comprar","Compare before you buy","买前先比价","Compare antes de comprar"],
+["Reunimos ofertas de varias tiendas para que veas cuánto puedes ahorrar y elijas con tranquilidad.","We gather offers from several stores so you can see how much you can save and choose with peace of mind.","我们汇集多家商店的优惠，让你清楚看到能省多少，安心选择。","Reunimos ofertas de várias lojas para você ver quanto pode economizar e escolher com tranquilidade."],
+["Ver ofertas","See offers","查看优惠","Ver ofertas"],
+["Mejor precio","Best price","最低价","Melhor preço"],
+["Ahorro posible","Possible savings","可节省","Economia possível"],
+["en audífonos","on headphones","耳机上","em fones de ouvido"],
+["ver productos","view products","查看商品","ver produtos"],
+["Ofertas y novedades","Deals and new arrivals","优惠与新品","Ofertas e novidades"],
+["Orden recomendado","Recommended order","推荐排序","Ordem recomendada"],
+["Mayor ahorro","Biggest savings","节省最多","Maior economia"],
+["Menor precio","Lowest price","价格最低","Menor preço"],
+["Mayor precio","Highest price","价格最高","Maior preço"],
+["Demostración:","Demo:","演示：","Demonstração:"],
+["los productos, precios y tiendas son ficticios. Aún no hay ofertas reales ni enlaces comerciales.","products, prices and stores are fictional. There are no real offers or commercial links yet.","商品、价格和商店均为虚构，目前还没有真实优惠或商业链接。","os produtos, preços e lojas são fictícios. Ainda não há ofertas reais nem links comerciais."],
+["Más comparados","Most compared","比价最多","Mais comparados"],
+["Así funciona","How it works","运作方式","Assim funciona"],
+["Busca un producto","Search for a product","搜索商品","Busque um produto"],
+["Escribe el nombre, marca o modelo que te interesa.","Type the name, brand or model you want.","输入你感兴趣的名称、品牌或型号。","Digite o nome, a marca ou o modelo que você quer."],
+["Compara ofertas","Compare offers","比较优惠","Compare ofertas"],
+["Revisa precios, tiendas y cuánto puedes ahorrar.","Check prices, stores and how much you can save.","查看价格、商店以及能节省多少。","Veja preços, lojas e quanto você pode economizar."],
+["Visita la tienda","Visit the store","前往商店","Visite a loja"],
+["Confirma el precio final en el comercio antes de pagar.","Confirm the final price at the store before paying.","付款前请在商店确认最终价格。","Confirme o preço final na loja antes de pagar."],
+["Te avisamos cuando baje el precio","We’ll tell you when the price drops","降价时通知你","Avisamos quando o preço baixar"],
+["Deja tu correo y recibe una alerta cuando encontremos una mejor oferta.","Leave your email and get an alert when we find a better offer.","留下邮箱，找到更优惠的价格时提醒你。","Deixe seu e-mail e receba um alerta quando encontrarmos uma oferta melhor."],
+["Tu correo","Your email","你的邮箱","Seu e-mail"],
+["Correo electrónico","Email","电子邮箱","E-mail"],
+["Enviar","Send","发送","Enviar"],
+["Listo. Esto es una demostración: aún no enviamos alertas.","Done. This is a demo: we don’t send alerts yet.","完成。这只是演示，目前还不会发送提醒。","Pronto. Esta é uma demonstração: ainda não enviamos alertas."],
+["Comparar para decidir mejor.","Compare to decide better.","比一比，选得更好。","Comparar para decidir melhor."],
+["Versión de demostración en desarrollo.","Demo version under development.","开发中的演示版本。","Versão de demonstração em desenvolvimento."],
+["Nosotros","About us","关于我们","Sobre nós"],
+["Ayuda","Help","帮助","Ajuda"],
+["Acerca de","About","关于","Sobre"],
+["Contacto","Contact","联系我们","Contato"],
+["Preguntas frecuentes","FAQ","常见问题","Perguntas frequentes"],
+["Confirma el precio en la tienda","Confirm the price at the store","请在商店确认价格","Confirme o preço na loja"],
+["Privacidad","Privacy","隐私","Privacidade"],
+["Comparar precios","Compare prices","比较价格","Comparar preços"],
+["Precios ficticios. Después conectaremos fuentes autorizadas.","Fictional prices. We’ll connect authorized sources later.","价格为虚构。之后我们会接入授权数据源。","Preços fictícios. Depois conectaremos fontes autorizadas."],
+["Cerrar","Close","关闭","Fechar"],
+["Anterior","Previous","上一个","Anterior"],
+["Siguiente","Next","下一个","Próximo"],
+["Filtrar por mercado","Filter by market","按市场筛选","Filtrar por mercado"],
+["Ordenar productos","Sort products","商品排序","Ordenar produtos"],
+["Idioma","Language","语言","Idioma"],
+["Cuenta","Account","账户","Conta"],
+["Audífonos inalámbricos","Wireless headphones","无线耳机","Fones de ouvido sem fio"],
+["Reloj inteligente","Smartwatch","智能手表","Relógio inteligente"],
+["Licuadora compacta","Compact blender","小型搅拌机","Liquidificador compacto"],
+["Tenis deportivos","Sneakers","运动鞋","Tênis esportivos"],
+["Set de cuidado facial","Facial care set","面部护理套装","Kit de cuidados faciais"],
+["Mancuernas ajustables","Adjustable dumbbells","可调节哑铃","Halteres ajustáveis"],
+["Bloques de construcción","Building blocks","积木","Blocos de montar"],
+["Pulse · Serie 4","Pulse · Series 4","Pulse · 4 代","Pulse · Série 4"],
+["DermaCare · 3 piezas","DermaCare · 3 pieces","DermaCare · 3 件","DermaCare · 3 peças"],
+["Active · Par","Active · Pair","Active · 一对","Active · Par"],
+["BuildFun · 500 piezas","BuildFun · 500 pieces","BuildFun · 500 块","BuildFun · 500 peças"],
+["Comparar+ | Compara precios y compra mejor","Comparar+ | Compare prices and buy smarter","Comparar+ | 比价更聪明，购物更放心","Comparar+ | Compare preços e compre melhor"],
+["Entrar","Sign in","登录","Entrar"],
+["Mi cuenta","My account","我的账户","Minha conta"],
+["Crea una cuenta o entra con tu correo","Create an account or sign in with your email","创建账户或用邮箱登录","Crie uma conta ou entre com seu e-mail"],
+["Crea una cuenta gratis para guardar productos y ver tu historial.","Create a free account to save products and see your history.","免费创建账户，即可收藏商品并查看浏览记录。","Crie uma conta grátis para salvar produtos e ver seu histórico."],
+["Nombre","Name","姓名","Nome"],
+["Continuar","Continue","继续","Continuar"],
+["Demostración: tu cuenta y tus datos se guardan solo en este navegador. Aún no hay servidor.","Demo: your account and data are stored only in this browser. There is no server yet.","演示：账户和数据仅保存在此浏览器中，目前没有服务器。","Demonstração: sua conta e seus dados ficam salvos apenas neste navegador. Ainda não há servidor."],
+["Guardados","Saved","已收藏","Salvos"],
+["Lista de deseos","Wishlist","心愿单","Lista de desejos"],
+["Historial","History","浏览记录","Histórico"],
+["Compras","Purchases","购买记录","Compras"],
+["Cerrar sesión","Sign out","退出登录","Sair"],
+["Aún no guardas productos. Toca «Guardar» al comparar un producto.","You haven’t saved any products yet. Tap “Save” when comparing a product.","还没有收藏商品。比较商品时点击“收藏”。","Você ainda não salvou produtos. Toque em “Salvar” ao comparar um produto."],
+["Tu lista de deseos está vacía. Toca el corazón ♡ en un producto.","Your wishlist is empty. Tap the heart ♡ on a product.","心愿单是空的。点击商品上的爱心 ♡。","Sua lista de desejos está vazia. Toque no coração ♡ em um produto."],
+["Tu historial aparecerá aquí cuando abras ofertas.","Your history will appear here when you open offers.","打开优惠后，浏览记录会显示在这里。","Seu histórico aparecerá aqui quando você abrir ofertas."],
+["Aún no registras compras. Usa «Compré aquí» en una oferta.","No purchases yet. Use “I bought here” on an offer.","还没有购买记录。在优惠上点击“我在这里买了”。","Nenhuma compra registrada. Use “Comprei aqui” em uma oferta."],
+["Guardar","Save","收藏","Salvar"],
+["Guardado","Saved","已收藏","Salvo"],
+["En tu lista de deseos","In your wishlist","已在心愿单","Na sua lista de desejos"],
+["Compré aquí","I bought here","我在这里买了","Comprei aqui"],
+["Quitar","Remove","移除","Remover"],
+["Compra registrada","Purchase recorded","已记录购买","Compra registrada"],
+["Sesión iniciada","Signed in","已登录","Sessão iniciada"]
+].forEach(r=>D[r[0]]=r.slice(1));
+const PT=[
+[/^Tienda de ejemplo (\w)$/,x=>["Example store "+x[1],"示例商店 "+x[1],"Loja de exemplo "+x[1]]],
+[/^(\d+) tiendas$/,x=>[x[1]+" stores",x[1]+" 家商店",x[1]+" lojas"]],
+[/^(\d+) productos?$/,x=>[x[1]+(x[1]=="1"?" product":" products"),x[1]+" 件商品",x[1]+(x[1]=="1"?" produto":" produtos")]],
+[/^Ahorras (.+)$/,x=>["You save "+x[1],"节省 "+x[1],"Você economiza "+x[1]]],
+[/^Desde (.+)$/,x=>["From "+x[1],"低至 "+x[1],"A partir de "+x[1]]],
+[/^(.+) · precio de demostración$/,x=>{const a=tt(x[1]);return [a+" · demo price",a+" · 演示价格",a+" · preço de demonstração"]}],
+[/^(.+) · (\d+) ofertas de ejemplo$/,x=>{const a=tt(x[1]);return [a+" · "+x[2]+" sample offers",a+" · "+x[2]+" 条示例优惠",a+" · "+x[2]+" ofertas de exemplo"]}],
+[/^Hola, (.+)$/,x=>["Hi, "+x[1],"你好，"+x[1],"Olá, "+x[1]]]
+];
+function tt(s){if(!lang)return s;const r=D[s];if(r)return r[lang-1];for(const [re,f] of PT){const x=s.match(re);if(x)return f(x)[lang-1]}return s}
+function apply(r){r=r||document.body;const w=document.createTreeWalker(r,NodeFilter.SHOW_TEXT);let n;
+ while(n=w.nextNode()){if(n.parentNode.nodeName==="SCRIPT")continue;if(n.__o===undefined)n.__o=n.nodeValue;const o=n.__o,s=o.trim();if(s)n.nodeValue=lang?o.replace(s,()=>tt(s)):o}
+ r.querySelectorAll("[placeholder],[aria-label]").forEach(e=>["placeholder","aria-label"].forEach(a=>{if(!e.hasAttribute(a))return;const k="_"+a;if(e[k]===undefined)e[k]=e.getAttribute(a);e.setAttribute(a,lang?tt(e[k]):e[k])}));
+ document.title=tt(T0);document.documentElement.lang=LG[lang]}
+function setLang(i){lang=i;try{localStorage.setItem("cp_lang",i)}catch(e){}after()}
+
+/* Cuenta: demostración guardada solo en este navegador */
+const mem={},st={g(k){try{return localStorage.getItem(k)}catch(e){return mem[k]??null}},s(k,v){try{localStorage.setItem(k,v)}catch(e){mem[k]=v}},d(k){try{localStorage.removeItem(k)}catch(e){delete mem[k]}}};
+let me=st.g("cp_me");
+const ud=()=>{if(!me)return null;try{return JSON.parse(st.g("cp_u_"+me))}catch(e){return null}},sv=d=>st.s("cp_u_"+me,JSON.stringify(d));
+const has=(k,id)=>{const d=ud();return !!d&&d[k].some(x=>x.id===id)};
+const GATE="Crea una cuenta gratis para guardar productos y ver tu historial.";
+const TABS=[["save","Guardados"],["wish","Lista de deseos"],["hist","Historial"],["buy","Compras"]];
+const EMPTY={save:"Aún no guardas productos. Toca «Guardar» al comparar un producto.",wish:"Tu lista de deseos está vacía. Toca el corazón ♡ en un producto.",hist:"Tu historial aparecerá aquí cuando abras ofertas.",buy:"Aún no registras compras. Usa «Compré aquí» en una oferta."};
+function toast(s){const t=$("toast");t.textContent=s;apply(t);t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display="none",2600)}
+function refresh(){render();$("accBtn").textContent=me?"Mi cuenta":"Entrar";apply($("accBtn"))}
+function after(){render();if($("bd").style.display==="grid")show(cur,true);if($("ab").style.display==="grid")renderAcc()}
+function tog(k,id){if(!ud()){openAcc(GATE);return}const d=ud(),i=d[k].findIndex(x=>x.id===id);if(i>=0)d[k].splice(i,1);else d[k].unshift({id,t:Date.now()});sv(d);after()}
+function hist(id){const d=ud();if(!d)return;d.hist=[{id,t:Date.now()},...d.hist.filter(x=>x.id!==id)].slice(0,30);sv(d)}
+function buy(id,store,price){if(!ud()){openAcc(GATE);return}const d=ud();d.buy.unshift({id,store,price,t:Date.now()});sv(d);toast("Compra registrada")}
+function row(k,x){const p=P.find(y=>y.id===x.id);if(!p)return"";const dt=new Date(x.t).toLocaleDateString(LC[lang]);
+ const sub=k==="buy"?`<span>${x.store}</span> · <span>${dt}</span>`:k==="hist"?`<span>${dt}</span>`:`Desde ${m(p.min)}`;
+ return `<div class="of"><div class="ic2" aria-hidden="true">${p.i}</div><div><strong>${p.n}</strong><small>${sub}</small></div><div class="r">${k==="buy"?`<div class="a">${m(x.price)}</div>`:""}<button class="chip" onclick="openP(${p.id})">Ver ofertas</button>${k==="save"||k==="wish"?`<button class="chip" onclick="tog('${k}',${p.id})">Quitar</button>`:""}</div></div>`}
+function renderAcc(msg){const d=ud();$("as").textContent=d?"Hola, "+d.name:"Crea una cuenta o entra con tu correo";
+ if(!d){$("abody").innerHTML=`${msg?`<p class="note">${msg}</p>`:""}<form class="af" id="af"><label>Nombre<input id="an" required autocomplete="name"></label><label>Correo electrónico<input id="ae" type="email" required autocomplete="email"></label><button class="cta" type="submit" style="justify-content:center">Continuar</button></form><p class="note">Demostración: tu cuenta y tus datos se guardan solo en este navegador. Aún no hay servidor.</p>`;
+  $("af").onsubmit=e=>{e.preventDefault();me=$("ae").value.trim().toLowerCase();st.s("cp_me",me);if(!ud())sv({name:$("an").value.trim(),save:[],wish:[],hist:[],buy:[]});refresh();renderAcc();toast("Sesión iniciada")};
+ }else{const L=d[tab];
+  $("abody").innerHTML=`<div class="tabs">${TABS.map(t=>`<button data-t="${t[0]}" aria-pressed="${t[0]===tab}">${t[1]}<span class="cn">${d[t[0]].length}</span></button>`).join("")}</div><div>${L.length?L.map(x=>row(tab,x)).join(""):`<p class="note">${EMPTY[tab]}</p>`}</div><div class="mact"><button class="chip" id="lo">Cerrar sesión</button></div>`;
+  $("abody").querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;renderAcc()});
+  $("lo").onclick=()=>{st.d("cp_me");me=null;refresh();renderAcc()}}
+ apply($("ab"))}
+function openAcc(msg){$("bd").style.display="none";$("ab").style.display="grid";renderAcc(msg);($("an")||$("ac")).focus()}
+function closeAcc(){$("ab").style.display="none"}
+function openP(id){closeAcc();show(id)}
+$("accBtn").onclick=()=>openAcc();$("ac").onclick=closeAcc;
+$("ab").onclick=e=>{if(e.target.id==="ab")closeAcc()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAcc()});
+const f0=$("mf").onsubmit;$("mf").onsubmit=e=>{f0(e);apply($("ok"))};
+// Carga productos y ofertas desde Supabase. Si las tablas están vacías,
+// la página conserva los productos ficticios de demostración.
+async function loadProductsFromSupabase(){
+  const note = document.querySelector("#ofertas .note");
+  const configured =
+    SUPABASE_URL.startsWith("https://") &&
+    !SUPABASE_URL.includes("PEGA_AQUI") &&
+    SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_") &&
+    !SUPABASE_PUBLISHABLE_KEY.includes("PEGA_AQUI");
+
+  if(!configured){
+    if(note) note.innerHTML = "<strong>Modo demostración:</strong> agrega tu Project URL y Publishable key en la configuración para conectar la base de datos. Los precios visibles siguen siendo ficticios.";
+    return;
+  }
+
+  try{
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    const { data, error } = await client
+      .from("products")
+      .select("id,name,brand,category,description,image_url,offers(id,price,currency,product_url,availability,stores(name,country))");
+
+    if(error) throw error;
+
+    const rows = (data || []).map((p, index) => {
+      const offers = (p.offers || [])
+        .filter(o => o.currency === "MXN" && Number.isFinite(Number(o.price)))
+        .map(o => [o.stores?.name || "Tienda", Number(o.price), o.stores?.country || "México"]);
+      if(!offers.length) return null;
+      const prices = offers.map(o => o[1]);
+      const low = Math.min(...prices), high = Math.max(...prices);
+      return {
+        id: index + 1, dbId: p.id, n: p.name, b: p.brand || "",
+        c: p.category || "Otros", k: offers[0][2],
+        i: ({ "Tecnología":"💻", "Hogar":"🏠", "Belleza":"🧴", "Moda":"👕", "Deportes":"⚽", "Juguetes":"🧩" })[p.category] || "🛍️",
+        o: offers, min: low, max: high, s: high-low,
+        pct: high ? Math.round((high-low)/high*100) : 0
+      };
+    }).filter(Boolean);
+
+    if(rows.length){
+      P = rows;
+      cat = "all"; q = ""; $("q").value = "";
+      render();
+      if(note) note.innerHTML = "<strong>Datos conectados:</strong> estos productos y ofertas se cargaron desde la base de datos de Comparar+. Confirma precios y disponibilidad directamente con cada tienda.";
+    }else if(note){
+      note.innerHTML = "<strong>Conexión establecida:</strong> Supabase respondió correctamente, pero todavía no hay productos con ofertas en MXN. Por ahora mostramos productos ficticios de demostración.";
+    }
+  }catch(err){
+    console.error("Error al conectar con Supabase:", err);
+    if(note) note.innerHTML = "<strong>No se pudo cargar la base de datos.</strong> Revisa las credenciales, las políticas de lectura y las relaciones entre tablas. La página conserva los productos de demostración.";
+  }
+}
+
+try{lang=+(localStorage.getItem("cp_lang")||0)}catch(e){}
+if(!(lang>=0&&lang<4))lang=0;
+$("lang").value=lang;$("lang").onchange=e=>setLang(+e.target.value);
+refresh();
+loadProductsFromSupabase();
+</script>
+</body>
+</html>
